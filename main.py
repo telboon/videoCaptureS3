@@ -2,7 +2,7 @@ import cv2
 import datetime
 import time
 
-interval=3
+interval=2
 creds=[]
 
 with open("aws-creds.txt") as f:
@@ -16,7 +16,7 @@ def uploadFile(fileName):
                       aws_secret_access_key=creds[1],
                       region_name='ap-northeast-1')
     s3 = session.resource("s3")
-    bucket = s3.Bucket("future-park")
+    bucket = s3.Bucket("human-rek")
 
     #test download
     bucket.upload_file(fileName, fileName)
@@ -29,7 +29,7 @@ while True:
     cap = cv2.VideoCapture(0)
 
     # Define the codec and create VideoWriter object
-    out = cv2.VideoWriter('output.mp4', cv2.VideoWriter_fourcc('M', 'P', '4', 'V'), 30.0, (640,480))
+    out = cv2.VideoWriter('output.mp4', cv2.VideoWriter_fourcc('m', 'p', '4', 'v'), 24.0, (640,480))
 
     while(datetime.datetime.now() - startTime < datetime.timedelta(0,interval)):
         ret, frame = cap.read()
@@ -49,3 +49,5 @@ while True:
 
     # time to do S3 upload
     uploadFile("output.mp4")
+
+    time.sleep(3)
